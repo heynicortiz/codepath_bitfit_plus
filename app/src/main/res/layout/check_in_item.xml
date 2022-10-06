@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recycler_view_row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="5dp">
+
+        <TextView
+            android:id="@+id/check_in_date"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent=".25"
+            android:textAlignment="center"
+            android:background="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Date" />
+
+        <TextView
+            android:id="@+id/check_in_session"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent=".25"
+            android:textAlignment="center"
+            android:background="@color/teal_700"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/check_in_date"
+            android:text="Session" />
+
+        <TextView
+            android:id="@+id/check_in_weight"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent=".25"
+            android:textAlignment="center"
+            android:background="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/check_in_session"
+            android:text="Weight" />
+
+        <TextView
+            android:id="@+id/check_in_body_fat"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent=".25"
+            android:textAlignment="center"
+            android:background="@color/teal_700"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/check_in_weight"
+            android:text="Body Fat" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
