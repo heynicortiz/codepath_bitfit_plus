@@ -14,14 +14,26 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/top_text"
+            android:id="@+id/welcomeNewUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            app:layout_constraintStart_toStartOf="parent"
+            android:padding="15dp"
+            android:text="Welcome to BitFit!\n\nLet's get started by clicking the '+' button to the bottom right."
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/large_text" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/top_text"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="@dimen/text_margin"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/welcomeNewUser"-->
+<!--            android:text="@string/large_text" />-->
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -29,18 +41,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
-            app:layout_constraintStart_toStartOf="@id/top_text"
+            app:layout_constraintStart_toStartOf="@id/welcomeNewUser"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_text" />
+            app:layout_constraintTop_toBottomOf="@id/welcomeNewUser" />
 
-
-        <TextView
-            android:id="@+id/hello_world"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_view"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
