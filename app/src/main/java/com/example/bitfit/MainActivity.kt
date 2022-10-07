@@ -119,17 +119,19 @@ class MainActivity : AppCompatActivity() {
         addDialog.setTitle("Add a Check-In")
 
         // testing out date picker
-        val dateEntry : DatePicker = customAlertDialogView.findViewById(R.id.editTextDate)
-        var cal = Calendar.getInstance()
-        dateEntry.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
-            cal.get(Calendar.DAY_OF_MONTH)
+        val datePicker : DatePicker = customAlertDialogView.findViewById(R.id.editTextDate)
+        var selectedDate = LocalDate.of(LocalDate.now().year, LocalDate.now().month, LocalDate.now().dayOfMonth)
+        var today = Calendar.getInstance()
+        datePicker.init(today.get(Calendar.YEAR), today.get(Calendar.MONTH),
+            today.get(Calendar.DAY_OF_MONTH)
 
         ) { view, year, month, day ->
             val month = month + 1
-            var createdDate = "$year-$month-$day"
-            var msg = "You Selected: ${createdDate}"
+            selectedDate = LocalDate.of(year, month, day)
+            val msg = "You Selected: $selectedDate"
             Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
         }
+
 
 
         // Respond to negative button press
@@ -142,7 +144,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 val timeOfDayInt = timeOfDayGroup.checkedRadioButtonId
                 var timeOfDay : String
-                val date = LocalDateTime.now()
+                val date = LocalDate.now()
                 val weight = weightInput.text.toString().toDouble()
                 val bodyFat = bodyFatInput.text.toString().toDouble()
 
@@ -152,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                     timeOfDay = "Evening"
                 }
 
-                val newCheckIn = CheckIn(timeOfDay, weight, bodyFat, "imageUrl", date.toString())
+                val newCheckIn = CheckIn(timeOfDay, weight, bodyFat, "imageUrl", selectedDate.toString())
 
                 checkInList.add(newCheckIn)
 
@@ -163,16 +165,36 @@ class MainActivity : AppCompatActivity() {
                             weight = weight,
                             bodyFat = bodyFat,
                             bodyImage = "bodyImageUrl",
-                            date = date.toString()
+                            date = selectedDate.toString()
                         )
                     )
                 }
 
+                checkInList.clear()
+
+                lifecycleScope.launch {
+                    (application as MyApp).db.checkInDao().getAll().collect { databaseList ->
+                        databaseList.map { entity ->
+                            CheckIn(
+                                entity.timeOfDay,
+                                entity.weight,
+                                entity.bodyFat,
+                                entity.bodyImage,
+                                entity.date
+                            )
+                        }.also { mappedList ->
+                            checkInList.clear()
+                            checkInList.addAll(mappedList)
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                }
 
 
-                Toast.makeText(this, "Added $weight and $timeOfDay for ${date.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))}", Toast.LENGTH_LONG).show()
 
-                adapter.notifyDataSetChanged()
+                Toast.makeText(this, "Added $weight and $timeOfDay for $selectedDate", Toast.LENGTH_LONG).show()
+
+//                adapter.notifyDataSetChanged()
             } catch (e: Exception) {
                 Log.e("Ortiz's Error", e.toString())
                 Toast.makeText(this, "Sorry, there was an error adding that item.", Toast.LENGTH_SHORT).show()
