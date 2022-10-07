@@ -86,16 +86,19 @@ class MainActivity : AppCompatActivity() {
                 }.also { mappedList ->
                     checkInList.clear()
                     checkInList.addAll(mappedList)
+                    checkInList.sortWith(compareBy<CheckIn> { it.date}.thenByDescending { it.timeOfDay })
                     adapter.notifyDataSetChanged()
+                    // display or hide welcome message
+                    welcomeNewUser = findViewById(R.id.welcomeNewUser)
+                    if (!checkInList.isEmpty()) {
+                        welcomeNewUser.visibility = View.INVISIBLE
+                        welcomeNewUser.height = 0
+                    }
                 }
             }
         }
 
-        // display or hide welcome message
-        welcomeNewUser = findViewById(R.id.welcomeNewUser)
-        if (!checkInList.isEmpty()) {
-            welcomeNewUser.visibility = View.INVISIBLE
-        }
+
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -104,16 +107,16 @@ class MainActivity : AppCompatActivity() {
 //        return true
 //    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//
+//        return when (item.itemId) {
+//            R.id.action_settings -> true
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
     private fun addCheckIn() {
         val timeOfDayGroup : RadioGroup = customAlertDialogView.findViewById(R.id.timeOfDayGroup)
@@ -121,6 +124,8 @@ class MainActivity : AppCompatActivity() {
         val eveningRadio : RadioButton = customAlertDialogView.findViewById(R.id.eveningRadio)
         val weightInput : EditText = customAlertDialogView.findViewById(R.id.weightInput)
         val bodyFatInput : EditText = customAlertDialogView.findViewById(R.id.bodyFatInput)
+        val selectImage : Button = customAlertDialogView.findViewById(R.id.selectImage)
+        val bodyImageInput : EditText = customAlertDialogView.findViewById(R.id.bodyImageInput)
 
         val addDialog = MaterialAlertDialogBuilder(customAlertDialogView.context)
         addDialog.setView(customAlertDialogView)
@@ -136,11 +141,7 @@ class MainActivity : AppCompatActivity() {
         ) { view, year, month, day ->
             val month = month + 1
             selectedDate = LocalDate.of(year, month, day)
-//            val msg = "You Selected: $selectedDate"
-//            Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
         }
-
-
 
         // Respond to negative button press
         addDialog.setNegativeButton("Cancel") { dialog, which ->
@@ -180,32 +181,36 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
 
-                checkInList.clear()
+//                checkInList.add(CheckIn(timeOfDay, weight, bodyFat, "bodyImageUrl", selectedDate.toString()))
 
-                lifecycleScope.launch {
-                    println("Printing List Second $checkInList")
-                    checkInList.clear()
-                    adapter.notifyDataSetChanged()
-                    println("Printing List Third $checkInList")
-                    (application as MyApp).db.checkInDao().getAll().collect { databaseList ->
-                        databaseList.map { entity ->
-                            CheckIn(
-                                entity.timeOfDay,
-                                entity.weight,
-                                entity.bodyFat,
-                                entity.bodyImage,
-                                entity.date
-                            )
-                        }.also { mappedList ->
-                            checkInList.clear()
-                            println("Printing List Fourth $checkInList")
-                            println("Printing Mapped List $mappedList")
-                            checkInList.addAll(mappedList)
-                            println("Printing List Fifth $checkInList")
-                            adapter.notifyDataSetChanged()
-                        }
-                    }
-                }
+                checkInList.sortWith(compareBy<CheckIn> { it.date}.thenBy { it.timeOfDay })
+
+                adapter.notifyDataSetChanged()
+
+//                lifecycleScope.launch {
+//                    println("Printing List Second $checkInList")
+//                    checkInList.clear()
+//                    adapter.notifyDataSetChanged()
+//                    println("Printing List Third $checkInList")
+//                    (application as MyApp).db.checkInDao().getAll().collect { databaseList ->
+//                        databaseList.map { entity ->
+//                            CheckIn(
+//                                entity.timeOfDay,
+//                                entity.weight,
+//                                entity.bodyFat,
+//                                entity.bodyImage,
+//                                entity.date
+//                            )
+//                        }.also { mappedList ->
+//                            checkInList.clear()
+//                            println("Printing List Fourth $checkInList")
+//                            println("Printing Mapped List $mappedList")
+//                            checkInList.addAll(mappedList)
+//                            println("Printing List Fifth $checkInList")
+//                            adapter.notifyDataSetChanged()
+//                        }
+//                    }
+//                }
 
 
 
