@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CheckInDao {
-    @Query("SELECT * FROM check_in_table ORDER BY date, timeOfDay desc")
+    @Query("SELECT * FROM check_in_table")
     fun getAll(): Flow<List<CheckInEntity>>
 
     @Insert
