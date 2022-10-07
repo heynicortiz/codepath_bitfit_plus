@@ -2,11 +2,13 @@ package com.example.bitfit
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
@@ -18,6 +20,12 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
+private lateinit var rvRow: ConstraintLayout
+private lateinit var  checkInDate: TextView
+private lateinit var  checkInSession: ImageView
+private lateinit var  checkInWeight: TextView
+private lateinit var  checkInBodyFat: TextView
+
 class CheckInItemAdapter(private val checkInItems: MutableList<CheckIn>): RecyclerView.Adapter<CheckInItemAdapter.ViewHolder>() {
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
@@ -28,11 +36,6 @@ class CheckInItemAdapter(private val checkInItems: MutableList<CheckIn>): Recycl
 
         // TODO: Create member variables for any view that will be set
         // as you render a row.
-        val rvRow: ConstraintLayout
-        val checkInDate: TextView
-        val checkInSession: TextView
-        val checkInWeight: TextView
-        val checkInBodyFat: TextView
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each sub-view
@@ -41,7 +44,7 @@ class CheckInItemAdapter(private val checkInItems: MutableList<CheckIn>): Recycl
             // the public final member variables created above
             rvRow = itemView.findViewById(R.id.recycler_view_row)
             checkInDate = itemView.findViewById(R.id.check_in_date)
-            checkInSession = itemView.findViewById(R.id.check_in_session)
+            checkInSession = itemView.findViewById(R.id.sessionImage)
             checkInWeight = itemView.findViewById(R.id.check_in_weight)
             checkInBodyFat = itemView.findViewById(R.id.check_in_body_fat)
         }
@@ -61,14 +64,20 @@ class CheckInItemAdapter(private val checkInItems: MutableList<CheckIn>): Recycl
 
         val dtf = DateTimeFormatter.ofPattern("MMM dd, yyyy")
 
-        val date = LocalDateTime.parse(checkInItem.date)
+        val date = LocalDate.parse(checkInItem.date)
 
-        holder.checkInDate.text = date.format(dtf)
-        holder.checkInSession.text = checkInItem.timeOfDay
-        holder.checkInWeight.text = checkInItem.weight.toString() + " lbs"
-        holder.checkInBodyFat.text = checkInItem.bodyFat.toString() + "%"
+        checkInDate.text = date.format(dtf)
+        if (checkInItem.timeOfDay.equals("Morning")) {
+            checkInSession.setImageResource(R.drawable.ic_baseline_wb_sunny_24)
+            checkInSession.setColorFilter(Color.parseColor("#ffde37"))
+        } else {
+            checkInSession.setImageResource(R.drawable.ic_baseline_nights_stay_24)
+            checkInSession.setColorFilter(Color.parseColor("#357edd"))
+        }
+        checkInWeight.text = checkInItem.weight.toString() + " lbs, "
+        checkInBodyFat.text = checkInItem.bodyFat.toString() + "% body fat"
 
-        holder.rvRow.setOnClickListener {
+        rvRow.setOnClickListener {
             try {
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(checkInItem.bodyImage))
                 ContextCompat.startActivity(it.context, browserIntent, null)
