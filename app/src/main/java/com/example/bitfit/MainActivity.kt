@@ -19,6 +19,8 @@ import androidx.room.PrimaryKey
 import com.example.bitfit.databinding.ActivityScrollingBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.Call
 import java.time.LocalDate
@@ -46,8 +48,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityScrollingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         setSupportActionBar(findViewById(R.id.toolbar))
         binding.toolbarLayout.title = title
 
@@ -65,15 +65,13 @@ class MainActivity : AppCompatActivity() {
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
 
 
-//        checkInList.addAll(CheckInItemFetcher.getItems())
-
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         adapter = CheckInItemAdapter(checkInList)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // load in database info
-        lifecycleScope.launch {
+        lifecycleScope.launch(Main) {
             (application as MyApp).db.checkInDao().getAll().collect { databaseList ->
                 databaseList.map { entity ->
                     CheckIn(
@@ -84,16 +82,20 @@ class MainActivity : AppCompatActivity() {
                         entity.date
                     )
                 }.also { mappedList ->
+                    println("The list was: $checkInList")
                     checkInList.clear()
+                    println("HEY THE LIST GOT CLEARED AGAIN??")
                     checkInList.addAll(mappedList)
-                    checkInList.sortWith(compareBy<CheckIn> { it.date}.thenByDescending { it.timeOfDay })
-                    adapter.notifyDataSetChanged()
+                    println("The list is now: $checkInList")
                     // display or hide welcome message
                     welcomeNewUser = findViewById(R.id.welcomeNewUser)
                     if (!checkInList.isEmpty()) {
                         welcomeNewUser.visibility = View.INVISIBLE
                         welcomeNewUser.height = 0
                     }
+                    // sort the list by date then Morning before Evening
+                    checkInList.sortWith(compareBy<CheckIn> { it.date}.thenByDescending { it.timeOfDay })
+                    adapter.notifyDataSetChanged()
                 }
             }
         }
@@ -131,14 +133,12 @@ class MainActivity : AppCompatActivity() {
         addDialog.setView(customAlertDialogView)
         addDialog.setTitle("Add a Check-In")
 
-        // testing out date picker
+        // date picker initialization to today
         val datePicker : DatePicker = customAlertDialogView.findViewById(R.id.editTextDate)
-        var selectedDate = LocalDate.of(LocalDate.now().year, LocalDate.now().month, LocalDate.now().dayOfMonth)
-        var today = Calendar.getInstance()
-        datePicker.init(today.get(Calendar.YEAR), today.get(Calendar.MONTH),
-            today.get(Calendar.DAY_OF_MONTH)
-
-        ) { view, year, month, day ->
+        val now = LocalDate.now()
+        var selectedDate = LocalDate.of(now.year, now.month, now.dayOfMonth)
+        datePicker.init(now.year, now.monthValue - 1, now.dayOfMonth)
+        { view, year, month, day ->
             val month = month + 1
             selectedDate = LocalDate.of(year, month, day)
         }
@@ -153,7 +153,6 @@ class MainActivity : AppCompatActivity() {
             try {
                 val timeOfDayInt = timeOfDayGroup.checkedRadioButtonId
                 var timeOfDay : String
-                val date = LocalDate.now()
                 val weight = weightInput.text.toString().toDouble()
                 val bodyFat = bodyFatInput.text.toString().toDouble()
 
@@ -163,12 +162,7 @@ class MainActivity : AppCompatActivity() {
                     timeOfDay = "Evening"
                 }
 
-//                val newCheckIn = CheckIn(timeOfDay, weight, bodyFat, "imageUrl", selectedDate.toString())
-//
-//                checkInList.add(newCheckIn)
-
-                println("Printing List First $checkInList")
-
+                // with the input informaiton, create a new CheckInEntity and add to the database
                 lifecycleScope.launch(IO) {
                     (application as MyApp).db.checkInDao().insert(
                         CheckInEntity(
@@ -180,50 +174,20 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
                 }
-
-//                checkInList.add(CheckIn(timeOfDay, weight, bodyFat, "bodyImageUrl", selectedDate.toString()))
-
-                checkInList.sortWith(compareBy<CheckIn> { it.date}.thenBy { it.timeOfDay })
-
-                adapter.notifyDataSetChanged()
-
-//                lifecycleScope.launch {
-//                    println("Printing List Second $checkInList")
-//                    checkInList.clear()
-//                    adapter.notifyDataSetChanged()
-//                    println("Printing List Third $checkInList")
-//                    (application as MyApp).db.checkInDao().getAll().collect { databaseList ->
-//                        databaseList.map { entity ->
-//                            CheckIn(
-//                                entity.timeOfDay,
-//                                entity.weight,
-//                                entity.bodyFat,
-//                                entity.bodyImage,
-//                                entity.date
-//                            )
-//                        }.also { mappedList ->
-//                            checkInList.clear()
-//                            println("Printing List Fourth $checkInList")
-//                            println("Printing Mapped List $mappedList")
-//                            checkInList.addAll(mappedList)
-//                            println("Printing List Fifth $checkInList")
-//                            adapter.notifyDataSetChanged()
-//                        }
-//                    }
-//                }
-
-
-
-
-//                Toast.makeText(this, "Added $weight and $timeOfDay for $selectedDate", Toast.LENGTH_LONG).show()
-
+//
+//                checkInList.sortWith(compareBy<CheckIn> { it.date}.thenBy { it.timeOfDay })
+//                println("Printing List Third $checkInList")
 //                adapter.notifyDataSetChanged()
+//                println("Printing List Fourth $checkInList")
             } catch (e: Exception) {
-                Log.e("Ortiz's Error", e.toString())
+                // for any exceptions here, just display a generic error
+                Log.e("BitFit's Error", e.toString())
                 Toast.makeText(this, "Sorry, there was an error adding that item.", Toast.LENGTH_SHORT).show()
             }
+
         }
 
+        // finally, show the dialog for the user input
         addDialog.show()
     }
 }
