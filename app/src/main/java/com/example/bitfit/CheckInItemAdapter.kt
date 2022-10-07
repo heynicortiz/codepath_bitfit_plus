@@ -4,21 +4,17 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 private lateinit var rvRow: ConstraintLayout
 private lateinit var  checkInDate: TextView
@@ -62,7 +58,7 @@ class CheckInItemAdapter(private val checkInItems: MutableList<CheckIn>): Recycl
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val checkInItem = checkInItems.get(position)
 
-        val dtf = DateTimeFormatter.ofPattern("MMM dd, yyyy")
+        val dtf = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
 
         val date = LocalDate.parse(checkInItem.date)
 
