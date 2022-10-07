@@ -11,7 +11,7 @@
         android:checkedButton="@id/morningRadio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextDate"
         android:orientation="horizontal">
 
         <RadioButton
@@ -31,7 +31,7 @@
 
     <DatePicker
         android:id="@+id/editTextDate"
-        app:layout_constraintTop_toBottomOf="@id/timeOfDayGroup"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:datePickerMode="spinner"
@@ -47,7 +47,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate"
+        app:layout_constraintTop_toBottomOf="@+id/timeOfDayGroup"
         android:hint="Enter Weight"
         android:textColorHint="?attr/colorPrimary"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
