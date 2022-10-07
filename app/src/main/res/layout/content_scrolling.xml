@@ -24,69 +24,15 @@
             android:text="@string/large_text" />
 
 
-        <TableLayout
-            android:id="@+id/table_holding_rv"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/top_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintStart_toStartOf="@id/top_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_text" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/check_in_date"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="Date"
-                    android:textAlignment="center"
-                    android:background="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/check_in_session"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    android:text="Session"
-                    android:background="@color/teal_700"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/check_in_weight"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    android:text="Weight"
-                    android:background="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/check_in_body_fat"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    android:text="Body Fat"
-                    android:background="@color/teal_700"
-                    android:textStyle="bold" />
-            </TableRow>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/top_text" />
-
-        </TableLayout>
 
         <TextView
             android:id="@+id/hello_world"
@@ -94,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="Hello World!"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/table_holding_rv"/>
+            app:layout_constraintTop_toBottomOf="@+id/recycler_view"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
