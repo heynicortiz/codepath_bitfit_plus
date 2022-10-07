@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var customAlertDialogView : View
 
+    private lateinit var welcomeNewUser: TextView
+
     private lateinit var adapter : CheckInItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +90,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // display or hide welcome message
+        welcomeNewUser = findViewById(R.id.welcomeNewUser)
+        if (!checkInList.isEmpty()) {
+            welcomeNewUser.visibility = View.INVISIBLE
+        }
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -128,8 +136,8 @@ class MainActivity : AppCompatActivity() {
         ) { view, year, month, day ->
             val month = month + 1
             selectedDate = LocalDate.of(year, month, day)
-            val msg = "You Selected: $selectedDate"
-            Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
+//            val msg = "You Selected: $selectedDate"
+//            Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
         }
 
 
@@ -154,9 +162,11 @@ class MainActivity : AppCompatActivity() {
                     timeOfDay = "Evening"
                 }
 
-                val newCheckIn = CheckIn(timeOfDay, weight, bodyFat, "imageUrl", selectedDate.toString())
+//                val newCheckIn = CheckIn(timeOfDay, weight, bodyFat, "imageUrl", selectedDate.toString())
+//
+//                checkInList.add(newCheckIn)
 
-                checkInList.add(newCheckIn)
+                println("Printing List First $checkInList")
 
                 lifecycleScope.launch(IO) {
                     (application as MyApp).db.checkInDao().insert(
@@ -173,6 +183,10 @@ class MainActivity : AppCompatActivity() {
                 checkInList.clear()
 
                 lifecycleScope.launch {
+                    println("Printing List Second $checkInList")
+                    checkInList.clear()
+                    adapter.notifyDataSetChanged()
+                    println("Printing List Third $checkInList")
                     (application as MyApp).db.checkInDao().getAll().collect { databaseList ->
                         databaseList.map { entity ->
                             CheckIn(
@@ -184,7 +198,10 @@ class MainActivity : AppCompatActivity() {
                             )
                         }.also { mappedList ->
                             checkInList.clear()
+                            println("Printing List Fourth $checkInList")
+                            println("Printing Mapped List $mappedList")
                             checkInList.addAll(mappedList)
+                            println("Printing List Fifth $checkInList")
                             adapter.notifyDataSetChanged()
                         }
                     }
@@ -192,7 +209,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
-                Toast.makeText(this, "Added $weight and $timeOfDay for $selectedDate", Toast.LENGTH_LONG).show()
+
+//                Toast.makeText(this, "Added $weight and $timeOfDay for $selectedDate", Toast.LENGTH_LONG).show()
 
 //                adapter.notifyDataSetChanged()
             } catch (e: Exception) {
