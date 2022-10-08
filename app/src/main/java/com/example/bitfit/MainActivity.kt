@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.Call
+import okhttp3.internal.notifyAll
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -95,6 +96,7 @@ class MainActivity : AppCompatActivity() {
                 }.also { mappedList ->
                     println("The list was: $checkInList")
                     checkInList.clear()
+                    adapter.notifyDataSetChanged()
                     println("HEY THE LIST GOT CLEARED AGAIN??")
                     checkInList.addAll(mappedList)
                     println("The list is now: $checkInList")
@@ -175,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                     timeOfDay = "Evening"
                 }
 
-                // with the input informaiton, create a new CheckInEntity and add to the database
+                // with the input information, create a new CheckInEntity and add to the database
                 lifecycleScope.launch(IO) {
                     (application as MyApp).db.checkInDao().insert(
                         CheckInEntity(
@@ -187,11 +189,6 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
                 }
-//
-//                checkInList.sortWith(compareBy<CheckIn> { it.date}.thenBy { it.timeOfDay })
-//                println("Printing List Third $checkInList")
-//                adapter.notifyDataSetChanged()
-//                println("Printing List Fourth $checkInList")
             } catch (e: Exception) {
                 // for any exceptions here, just display a generic error
                 Log.e("BitFit's Error", e.toString())
