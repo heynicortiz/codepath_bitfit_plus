@@ -105,6 +105,27 @@ class MainActivity : AppCompatActivity() {
                     if (!checkInList.isEmpty()) {
                         welcomeNewUser.visibility = View.GONE
                         userMetricsLinearLayout.visibility = View.VISIBLE
+                        val firstCheckIn = checkInList[0]
+                        val latestCheckIn = checkInList[checkInList.size -1]
+                        firstCheckInDisplay.text = firstCheckIn.date.toString()
+                        latestCheckInDisplay.text = latestCheckIn.date.toString()
+                        firstWeightDisplay.text = firstCheckIn.weight.toString()
+                        latestWeightDisplay.text = latestCheckIn.weight.toString()
+                        firstBodyFatDisplay.text = firstCheckIn.bodyFat.toString()
+                        latestBodyFatDisplay.text = latestCheckIn.bodyFat.toString()
+
+                        var totalWeight = 0.0
+                        var totalBodyFat = 0.0
+                        var checkInCount = 0
+                        checkInList.forEach {
+                            totalWeight += it.weight!!
+                            totalBodyFat += it.bodyFat!!
+                            checkInCount += 1
+                        }
+
+                        averageWeightDisplay.text = ( totalWeight / checkInCount).toString()
+                        averageBodyFatDisplay.text = ( totalBodyFat / checkInCount).toString()
+
                     } else {
 //                        userMetricsLinearLayout.visibility = View.GONE
                     }
