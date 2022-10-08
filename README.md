@@ -33,7 +33,9 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/heynicortiz/codepath_bitfit/blob/master/BitFit%20Stories%20-%20Portrait.gif?raw=true' title='Video Walkthrough - Portrait' width='' alt='Video Walkthrough - Landscape' />
+
+<img src='https://github.com/heynicortiz/codepath_bitfit/blob/master/BitFit%20Stories%20-%20Landscape.gif?raw=true' title='Video Walkthrough - Portrait' width='' alt='Video Walkthrough - Landscape' />
 
 GIF created with [Kap](https://getkap.co/) for macOS
 
