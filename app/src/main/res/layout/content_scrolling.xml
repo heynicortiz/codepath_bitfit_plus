@@ -110,7 +110,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="" />
+                        android:text=" - " />
                 </TableRow>
 
                 <TableRow
@@ -122,7 +122,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Weight" />
+                        android:text="Weight (lbs)" />
 
                     <TextView
                         android:id="@+id/firstWeightDisplay"
@@ -155,7 +155,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Body Fat" />
+                        android:text="Body Fat (%)" />
 
                     <TextView
                         android:id="@+id/firstBodyFatDisplay"
