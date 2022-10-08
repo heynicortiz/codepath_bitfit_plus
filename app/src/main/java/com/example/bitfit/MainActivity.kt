@@ -64,6 +64,17 @@ class MainActivity : AppCompatActivity() {
         // dialog creator
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
 
+        // user metrics table
+        val userMetricsLinearLayout = findViewById<LinearLayout>(R.id.userMetricsLinearLayout)
+        val firstCheckInDisplay = findViewById<TextView>(R.id.firstCheckInDisplay)
+        val latestCheckInDisplay = findViewById<TextView>(R.id.latestCheckInDisplay)
+        val firstWeightDisplay = findViewById<TextView>(R.id.firstWeightDisplay)
+        val latestWeightDisplay = findViewById<TextView>(R.id.latestWeightDisplay)
+        val averageWeightDisplay = findViewById<TextView>(R.id.averageWeightDisplay)
+        val firstBodyFatDisplay = findViewById<TextView>(R.id.firstBodyFatDisplay)
+        val latestBodyFatDisplay = findViewById<TextView>(R.id.latestBodyFatDisplay)
+        val averageBodyFatDisplay = findViewById<TextView>(R.id.averageBodyFatDisplay)
+
 
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         adapter = CheckInItemAdapter(checkInList)
@@ -90,8 +101,10 @@ class MainActivity : AppCompatActivity() {
                     // display or hide welcome message
                     welcomeNewUser = findViewById(R.id.welcomeNewUser)
                     if (!checkInList.isEmpty()) {
-                        welcomeNewUser.visibility = View.INVISIBLE
-                        welcomeNewUser.height = 0
+                        welcomeNewUser.visibility = View.GONE
+                        userMetricsLinearLayout.visibility = View.VISIBLE
+                    } else {
+//                        userMetricsLinearLayout.visibility = View.GONE
                     }
                     // sort the list by date then Morning before Evening
                     checkInList.sortWith(compareBy<CheckIn> { it.date}.thenByDescending { it.timeOfDay })
