@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/list_button"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_list_24"
+        android:title="List"
+        app:showAsAction="ifRoom" /> />
+
+    <item
+        android:id="@+id/placeholder"
+        android:enabled="true"
+        android:title=""
+        app:showAsAction="ifRoom" /> />
+
+    <item
+        android:id="@+id/metrics_button"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_insert_chart_24"
+        android:title="Metrics"
+        app:showAsAction="ifRoom" /> />
+
+</menu>

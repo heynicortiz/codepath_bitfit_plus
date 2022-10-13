@@ -1,47 +1,42 @@
-# Android Project 5 - *BitFit*
+# Android Project 6 - *BitFit Plus*
 
 Submitted by: **Nicolas Ortiz**
 
-**BitFit** is a health metrics app that allows users to track `body fat` and `body weight` in a Android native application.
+**BitFit Plus** is a health metrics app that allows users to track `body fat` and `body weight` in a Android native application.
 
-Time spent: **14** hours spent in total
+Time spent: **7** hours spent in total
 
 ## Required Features
 
 The following **required** functionality is completed:
 
-- [X] **At least one health metric is tracked (based on user input)**
-    - Chosen metric(s): `body fat percentage`, `body weight`
-- [X] **There is a "create entry" UI that prompts users to make their daily entry**
-- [X] **New entries are saved in a database and then updated in the RecyclerView**
-- [X] **On application restart, previously entered entries are preserved (i.e., are *persistent*)**
+- [X] **Use at least 2 Fragments**
+- [X] **Create a new dashboard fragment where users can see a summary of their entered data**
+- [X] **Use one of the Navigation UI Views (BottomNavigation, Drawer Layout, Top Bar) to move between the fragments**
 
 The following **optional** features are implemented:
 
-- [X] **Create a UI for tracking averages and trends in metrics**
-- [X] **Improve and customize the user interface through styling and coloring**
-- [X] **Implement orientation responsivity**
-- [ ] **Add a daily photo feature**
+- [ ] **Add a more advanced UI (e.g: Graphing) for tracking trends in metrics**
+- [ ] **Implement daily notifications to prompt users to fill in their data**
 
 The following **additional** features are implemented:
 
-- [X] Quick welcome message is shown for new users (those with no check ins stored in the database)
-- [X] Welcome message gets replaced by user statistics
-- [X] Checkins are shown from the database in chronological order for date provided, not created. These are also sorted further by morning or evening session.
+- [X] Due to a glitch I have not resolved with adding new checkins, I implemented a workaround that reloads the log fragment upon each new value added. This completely masks the  issue from the user perspective!
+- [X] Truncated metric average calculations to 2 decimal places.
+- [X] Welcome/placeholder messages until user has at least one check-in provided.
+- [X] Centered floating action button to launch the input dialog.
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/heynicortiz/codepath_bitfit/blob/master/BitFit%20Stories%20-%20Portrait.gif?raw=true' title='Video Walkthrough - Portrait' width='' alt='Video Walkthrough - Portrait' />
-
-<img src='https://github.com/heynicortiz/codepath_bitfit/blob/master/BitFit%20Stories%20-%20Landscape.gif?raw=true' title='Video Walkthrough - Landscape' width='' alt='Video Walkthrough - Landscape' />
+<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [Kap](https://getkap.co/) for macOS
 
 ## Notes
 
-There is an issue related to the RecyclerView/Adapter when enough entries are made that results in multiple entries displaying the same for some reason. I was not able to trace this down yet, but the underlying data and the data shown in the list used to populate the adapter is correct. When the user restarts the app, all data is presented properly again.
+Transferring/sharing data between the main activity and the different fragments led me to do some creative refactoring of my code to implement the split fragment idea.
 
 ## License
 
