@@ -34,6 +34,7 @@ class MetricsFragment : Fragment() {
 
 
         // user metrics table
+        val welcomeNewUser = view.findViewById<TextView>(R.id.welcomeNewUser)
         val userMetricsLinearLayout = view.findViewById<LinearLayout>(R.id.userMetricsLinearLayout)
         val firstCheckInDisplay = view.findViewById<TextView>(R.id.firstCheckInDisplay)
         val latestCheckInDisplay = view.findViewById<TextView>(R.id.latestCheckInDisplay)
@@ -43,6 +44,8 @@ class MetricsFragment : Fragment() {
         val firstBodyFatDisplay = view.findViewById<TextView>(R.id.firstBodyFatDisplay)
         val latestBodyFatDisplay = view.findViewById<TextView>(R.id.latestBodyFatDisplay)
         val averageBodyFatDisplay = view.findViewById<TextView>(R.id.averageBodyFatDisplay)
+
+        userMetricsLinearLayout.visibility = View.GONE
 
 
         // load in database info
@@ -63,6 +66,7 @@ class MetricsFragment : Fragment() {
                     checkInList.sortWith(compareBy<CheckIn> { it.date}.thenByDescending { it.timeOfDay })
 
                     if (!checkInList.isEmpty()) {
+                        welcomeNewUser.visibility = View.GONE
                         userMetricsLinearLayout.visibility = View.VISIBLE
                         val firstCheckIn = checkInList[0]
                         val latestCheckIn = checkInList[checkInList.size -1]
